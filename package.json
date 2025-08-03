@@ -7,7 +7,9 @@
     "build": "vite build",
     "serve": "vite preview",
     "prepare": "husky",
-    "lint": "lint-staged"
+    "lint": "lint-staged",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "axios": "^1.11.0",
@@ -23,6 +25,7 @@
     "@vitejs/plugin-react": "^2.0.0",
     "eslint": "^9.32.0",
     "eslint-plugin-react": "^7.37.5",
+    "gh-pages": "^6.3.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jiti": "^2.5.1",
