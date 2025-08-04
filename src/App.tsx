@@ -13,7 +13,7 @@ interface UserDetails {
 
 interface Repo {
   name: string;
-  url: string;
+  html_url: string;
 }   
 
 type Repos= Repo[];
@@ -22,14 +22,17 @@ const App: React.FC = () => {
     const [userName, setUserName] = useState("");
     const [userDetails, setUserDetails] = useState< UserDetails | null>(null);  
     const [repos, setRepos] = useState<Repos>([]);
+    // const [error, setError] = useState<string | null>(null);
+    // const [loading, setLoading] = useState<boolean>(false);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
     };
+
     const submitHandler = () => {
         axios.get(`https://api.github.com/users/${userName}`)
             .then(response => {
-                setUserDetails(response.data);
+                setUserDetails(() => response.data);
             })
             .catch(error => {
                 console.error("There was an error greeting the user!", error);
@@ -41,13 +44,14 @@ const App: React.FC = () => {
         if (userDetails) {  
             axios.get('https://api.github.com/users/' + userName + '/repos')
             .then(response => {
-                setRepos(response.data);
+                setRepos(()=>response.data);
             })
             .catch(error => {
                 console.error("There was an error greeting the user!", error);
             }
         );
         }
+        console.log(repos);
     };
 
     return (
@@ -78,7 +82,7 @@ const App: React.FC = () => {
                     <h3 className='repo-title'>Repositories:</h3>
                     {repos.map((repo, index) => (
                         <li key={index}>
-                            <a className='repo-link' href={repo.url} target="_blank" rel="noopener noreferrer">
+                            <a className='repo-link' href={repo?.html_url} target="_blank" rel="noopener noreferrer">
                                 {repo.name}
                             </a>
                         </li>
